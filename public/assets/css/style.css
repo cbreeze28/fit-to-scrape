@@ -1,15 +1,12 @@
-h4{
-    color: rgb(154, 184, 105);
-  }
-  
-  .hover{
-      background-color: rgb(87, 207, 63)
-  }
-  
-  .hoverRed:hover{
-    color: red;
-  }
-  
-  .hover:hover{
-      background-color: rgba(0,0,0,0.5);
-  }
+/**
+ * Homework Assignment 18 - All the News That's Fit to Scrape
+ * Jarrett Tolman - assets/css/style.css
+ **/
+
+ html, body {
+    min-height: 100%;
+}
+
+body {
+    padding: 70px;
+}
