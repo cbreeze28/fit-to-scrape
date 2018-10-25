@@ -38,10 +38,10 @@ app
 // set mongoose to leverage promises
 mongoose.Promise = Promise;
 
-const dbURI = process.env.MONGODB_URI || "mongodb://localhost:27017/news";
+const dbURI = process.env.MONGODB_URI || "mongodb://heroku_xfdn6n3v:bsarvmruchdgqp8grc8tnom2g2@ds133659.mlab.com:33659/heroku_xfdn6n3v";
 
 // Database configuration with mongoose
-mongoose.connect(dbURI);
+mongoose.connect("mongodb://heroku_xfdn6n3v:bsarvmruchdgqp8grc8tnom2g2@ds133659.mlab.com:33659/heroku_xfdn6n3v", { useNewUrlParser: true });
 
 const db = mongoose.connection;
 
