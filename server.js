@@ -1,44 +1,22 @@
-// Dependencies
-var express = require('express');
-var bodyParser = require('body-parser');
-var logger = require('morgan');
-var mongoose = require('mongoose');
 
-var Note = require('./models/Note.js');
-var Article = require('./models/Article.js')
+let express = require('express'); // Express Server
+let bodyParser = require('body-parser'); // Post Body Request
+let exphbs = require('express-handlebars'); // Templating Engine
 
-var request = require('request');
-var cheerio = require('cheerio');
-mongoose.Promise = Promise;
+var db = require("./models"); // Require all models
 
-var PORT = process.env.PORT || 3000;
+let PORT = process.env.PORT || 3000; 
+let app = express(); 
 
-var app = express();
+app.use(bodyParser.urlencoded({ extended: false })); 
+app.use(bodyParser.json());
+app.use(express.static("public")); 
 
-app.use(logger("dev"));
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
-app.use(express.static("public"));
-var exphbs = require('express-handlebars');
-app.engine('handlebars', exphbs({defaultLayout: "main"}));
-app.set('view engine', 'handlebars');
+require("./controllers/webScrapperController.js")(app);
 
-var routes = require("./controllers/controller.js");
-app.use("/", routes);
-mongoose.connect('mongodb://heroku_w52htvsn:vs17gr03kb2jhkfvfa5hodk7jn@ds141633.mlab.com:41633/heroku_w52htvsn', {useNewUrlParser: true});
-//mongoose.connect('mongodb://localhost/model-news-scraper');
-var db = mongoose.connection;
-
-db.on("error", function(error) {
-  console.log("Mongoose Error: ", error);
-});
-
-db.once("open", function() {
-  console.log("Mongoose connection successful.");
-});
-
-app.listen(PORT, function() {
-  console.log("App running on PORT " + PORT);
-});
+app.listen(PORT, ()=>{
+    console.log(`App listening on PORT ${PORT}`);
+})
