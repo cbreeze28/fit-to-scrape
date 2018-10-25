@@ -30,7 +30,7 @@ router.get("/save", function(req, res) {
 // A GET request to scrape the nytimes website
 router.post("/scrape", function(req, res) {
   // grabs the body of content with a request
-  request("https://old.reddit.com/r/news/", function(error, response, html) {
+  request("http://www.nytimes.com/", function(error, response, html) {
     // load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(html);
     var scrapedArticles = {};
