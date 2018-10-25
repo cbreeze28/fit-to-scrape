@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/cbreeze28/fit-to-scrape/issues"
   },
-  "homepage": "https://github.com/cbreeze28/fit-to-scrape#readme",
+  "homepage": "https://scrapingreddit.herokuapp.com/",
   "dependencies": {
     "body-parser": "^1.18.3",
     "cheerio": "^1.0.0-rc.2",

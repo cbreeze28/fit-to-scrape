@@ -27,7 +27,7 @@ app.set('view engine', 'handlebars');
 
 var routes = require("./controllers/controller.js");
 app.use("/", routes);
-mongoose.connect('mongodb://<dbuser>:<dbpassword>@ds141633.mlab.com:41633/heroku_w52htvsn');
+mongoose.connect('mongodb://heroku_w52htvsn:vs17gr03kb2jhkfvfa5hodk7jn@ds141633.mlab.com:41633/heroku_w52htvsn');
 //mongoose.connect('mongodb://localhost/model-news-scraper');
 var db = mongoose.connection;
 
