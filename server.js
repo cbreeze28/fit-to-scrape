@@ -1,42 +1,44 @@
-// Parses our HTML and helps us find elements
-var cheerio = require("cheerio");
-// Makes HTTP request for HTML page
-var request = require("request");
+// Dependencies
+var express = require('express');
+var bodyParser = require('body-parser');
+var logger = require('morgan');
+var mongoose = require('mongoose');
 
-// First, tell the console what server.js is doing
-console.log("\n***********************************\n" +
-            "Grabbing every thread name and link\n" +
-            "from reddit's news front page:" +
-            "\n***********************************\n");
+var Note = require('./models/Note.js');
+var Article = require('./models/Article.js')
 
-// Making a request for reddit's "news" board. The page's HTML is passed as the callback's third argument
-request("https://old.reddit.com/r/news/", function(error, response, html) {
+var request = require('request');
+var cheerio = require('cheerio');
+mongoose.Promise = Promise;
 
-  // Load the HTML into cheerio and save it to a variable
-  // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
-  var $ = cheerio.load(html);
+var PORT = process.env.PORT || 3000;
 
-  // An empty array to save the data that we'll scrape
-  var results = [];
+var app = express();
 
-  // With cheerio, find each p-tag with the "title" class
-  // (i: iterator. element: the current element)
-  $("p.title").each(function(i, element) {
+app.use(logger("dev"));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
-    // Save the text of the element in a "title" variable
-    var title = $(element).text();
+app.use(express.static("public"));
+var exphbs = require('express-handlebars');
+app.engine('handlebars', exphbs({defaultLayout: "main"}));
+app.set('view engine', 'handlebars');
 
-    // In the currently selected element, look at its child elements (i.e., its a-tags),
-    // then save the values for any "href" attributes that the child elements may have
-    var link = $(element).children().attr("href");
+var routes = require("./controllers/controller.js");
+app.use("/", routes);
+mongoose.connect('mongodb://localhost/model-news-scraper');
+//mongoose.connect('mongodb://localhost/model-news-scraper');
+var db = mongoose.connection;
 
-    // Save these results in an object that we'll push into the results array we defined earlier
-    results.push({
-      title: title,
-      link: link
-    });
-  });
+db.on("error", function(error) {
+  console.log("Mongoose Error: ", error);
+});
 
-  // Log the results once you've looped through each of the elements found with cheerio
-  console.log(results);
+db.once("open", function() {
+  console.log("Mongoose connection successful.");
+});
+
+app.listen(PORT, function() {
+  console.log("App running on PORT " + PORT);
 });
